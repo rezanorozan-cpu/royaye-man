@@ -1,1 +1,198 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رویای من | دعوتنامه عاشقانه</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#10090d;color:#fff1df;
+ font-family:Tahoma,Arial,sans-serif;
+}
+header{
+ min-height:90vh;display:flex;flex-direction:column;
+ align-items:center;justify-content:center;text-align:center;
+ padding:25px;
+ background:
+ radial-gradient(circle at 50% 40%,#652039 0%,#260e1a 42%,#10090d 78%);
+}
+.gold{color:#e8c477}
+h1{font-size:48px;margin:15px 0;color:#e8c477}
+.subtitle{line-height:2;color:#e8d5c5}
+button{
+ border:1px solid #e8c477;background:#8d2946;color:white;
+ padding:14px 24px;border-radius:30px;font-size:16px;
+ cursor:pointer;margin:8px;
+}
+button:hover{background:#ad385c}
+section{
+ max-width:700px;margin:25px auto;padding:22px;
+ background:#21121b;border:1px solid #68402f;
+ border-radius:18px;
+}
+h2{color:#e8c477}
+label{display:block;margin-top:15px;color:#e8c477}
+input,textarea{
+ width:100%;padding:13px;margin-top:7px;
+ border:1px solid #68402f;border-radius:10px;
+ background:#130d12;color:white;font-size:15px;
+}
+textarea{min-height:75px}
+#invitation{
+ display:none;text-align:center;
+ background:linear-gradient(145deg,#351321,#160d14);
+ border:2px solid #c9a45c;padding:30px;
+}
+#photo{max-width:100%;max-height:260px;border-radius:14px;margin:15px auto}
+.names{font-size:30px;color:#e8c477;line-height:1.8}
+.small{color:#d9c3b4;line-height:2}
+footer{text-align:center;padding:30px;color:#a98c7b}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="gold">✦ ✧ ✦</div>
+ <h1>رویای من</h1>
+ <p class="subtitle">شبی برای عشق، خاطره‌ای برای همیشه</p>
+ <p class="gold">یک دعوت از جنس عشق...</p>
+ <button onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">
+ ساخت دعوتنامه من
+ </button>
+</header>
+
+<section id="builder">
+ <h2>ساخت کارت عروسی 💍</h2>
+
+ <label>نام عروس</label>
+ <input id="bride" placeholder="نام عروس">
+
+ <label>نام داماد</label>
+ <input id="groom" placeholder="نام داماد">
+
+ <label>تاریخ مراسم</label>
+ <input id="date" type="date">
+
+ <label>ساعت مراسم</label>
+ <input id="time" type="time">
+
+ <label>نام تالار یا محل برگزاری</label>
+ <input id="venue" placeholder="مثلاً تالار رویایی">
+
+ <label>آدرس مراسم</label>
+ <textarea id="address" placeholder="آدرس کامل مراسم"></textarea>
+
+ <label>لینک مسیریابی (اختیاری)</label>
+ <input id="map" placeholder="لینک نقشه را وارد کن">
+
+ <label>عکس دلخواه</label>
+ <input id="photoFile" type="file" accept="image/*">
+
+ <label>آهنگ دلخواه (اختیاری)</label>
+ <input id="songFile" type="file" accept="audio/*">
+
+ <button onclick="makeCard()">ساخت کارت دعوت ❤️</button>
+</section>
+
+<section id="invitation">
+ <div class="gold">✦ به نام عشق ✦</div>
+ <h2>دعوتید به جشن پیوند ما</h2>
+ <div class="names" id="cardNames"></div>
+ <img id="photo" style="display:none">
+ <p class="small" id="cardDate"></p>
+ <p class="small" id="cardTime"></p>
+ <h3 class="gold" id="cardVenue"></h3>
+ <p class="small" id="cardAddress"></p>
+ <a id="mapLink" target="_blank" style="color:#e8c477;display:none">مشاهده مسیر روی نقشه</a>
+ <div id="songArea"></div>
+ <hr style="border-color:#68402f;margin:25px 0">
+ <h3 class="gold">در جشن ما همراه می‌شوید؟</h3>
+ <button onclick="reply('بله، می‌آیم ❤️')">بله، می‌آیم ❤️</button>
+ <button onclick="reply('متأسفانه نمی‌توانم')">متأسفانه نمی‌توانم</button>
+ <button onclick="reply('هنوز مطمئن نیستم')">هنوز مطمئن نیستم</button>
+ <p id="replyMessage" class="small"></p>
+ <button onclick="shareCard()">اشتراک‌گذاری دعوتنامه</button>
+</section>
+
+<footer>با عشق ساخته شده در رویای من ✨</footer>
+
+<script>
+let imageUrl = "";
+let songUrl = "";
+
+document.getElementById("photoFile").addEventListener("change",function(){
+ const file=this.files[0];
+ if(file) imageUrl=URL.createObjectURL(file);
+});
+
+document.getElementById("songFile").addEventListener("change",function(){
+ const file=this.files[0];
+ if(file) songUrl=URL.createObjectURL(file);
+});
+
+function makeCard(){
+ const bride=document.getElementById("bride").value.trim();
+ const groom=document.getElementById("groom").value.trim();
+
+ if(!bride || !groom){
+  alert("لطفاً نام عروس و داماد را وارد کن");
+  return;
+ }
+
+ document.getElementById("cardNames").textContent=bride+" و "+groom;
+ document.getElementById("cardDate").textContent="تاریخ: "+(document.getElementById("date").value || "به‌زودی اعلام می‌شود");
+ document.getElementById("cardTime").textContent="ساعت: "+(document.getElementById("time").value || "اعلام نشده");
+ document.getElementById("cardVenue").textContent=document.getElementById("venue").value;
+ document.getElementById("cardAddress").textContent=document.getElementById("address").value;
+
+ const photo=document.getElementById("photo");
+ photo.style.display=imageUrl?"block":"none";
+ if(imageUrl) photo.src=imageUrl;
+
+ const map=document.getElementById("map").value.trim();
+ const mapLink=document.getElementById("mapLink");
+ mapLink.style.display=map?"inline-block":"none";
+ mapLink.href=map;
+
+ const songArea=document.getElementById("songArea");
+ songArea.innerHTML="";
+ if(songUrl){
+  const audio=document.createElement("audio");
+  audio.controls=true;
+  audio.src=songUrl;
+  songArea.appendChild(audio);
+ }
+
+ document.getElementById("replyMessage").textContent="";
+ document.getElementById("invitation").style.display="block";
+ document.getElementById("invitation").scrollIntoView({behavior:"smooth"});
+}
+
+function reply(answer){
+ document.getElementById("replyMessage").textContent="پاسخ شما: "+answer;
+ alert("پاسخ شما در این پیش‌نمایش ثبت شد.");
+}
+
+function shareCard(){
+ const text=
+ "دعوتید به جشن عروسی ❤️\n"+
+ document.getElementById("cardNames").textContent+"\n"+
+ document.getElementById("cardDate").textContent+"\n"+
+ document.getElementById("cardTime").textContent+"\n"+
+ document.getElementById("cardVenue").textContent+"\n"+
+ document.getElementById("cardAddress").textContent;
+
+ if(navigator.share){
+  navigator.share({title:"دعوتنامه رویای من",text:text});
+ }else if(navigator.clipboard){
+  navigator.clipboard.writeText(text).then(()=>alert("متن دعوتنامه کپی شد."));
+ }else{
+  alert(text);
+ }
+}
+</script>
+</body>
+</html>
+
